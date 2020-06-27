@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$" libraries="{password_manager_back/node_modules}" />
+    <file url="PROJECT" libraries="{@types/express, @types/jsonwebtoken, @types/mongodb, password_manager_back/node_modules}" />
+    <includedPredefinedLibrary name="Node.js Core" />
+  </component>
+</project>
