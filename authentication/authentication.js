@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
-const { authentication } = require('../config/config.json')
+const { auth } = require('../config/config.json')
 
 exports.sign = async (user) => {
-    return jwt.sign(user, authentication.accessToken, {expiresIn: "1m"});
+    return jwt.sign(user, auth.accessToken, {expiresIn: "1m"});
 }
 
 exports.authenticateToken = (req, res, next) => {
@@ -11,7 +11,7 @@ exports.authenticateToken = (req, res, next) => {
     if (token == null) return res.sendStatus(401);
 
     try {
-        req.user = jwt.verify(token, authentication.accessToken);
+        req.user = jwt.verify(token, auth.accessToken);
         next();
     }
     catch (e) {
