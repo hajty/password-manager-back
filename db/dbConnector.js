@@ -79,7 +79,8 @@ exports.selectPassword = async (dbName, id) => {
         const client = await connect();
         const db = client.db(dbName)
         const collection = db.collection('passwords');
-        const data = await collection.findOne({'_id': id});
+        const ObjectID = require('mongodb').ObjectID;
+        const data = await collection.findOne({'_id': new ObjectID(id)});
 
         close(client);
         if (data) logger.info(`Found password ${data._id} in the database ${db.databaseName} and collection ${collection.collectionName}.`)
@@ -103,6 +104,7 @@ exports.selectAllPasswords = async (dbName) => {
     }
     catch (e) {
         logger.error(`Cannot select items from database ${dbName} and collection passwords. Error: ${e}`)
+        return null;
     }
 }
 

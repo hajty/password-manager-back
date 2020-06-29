@@ -22,12 +22,35 @@ exports.create = async (userId, password) => {
     return false;
 }
 
-exports.read = () => {
+exports.read = async (userId) => {
+    try {
+        const data = await dbConnector.selectAllPasswords(userId);
 
+        if (data) {
+            logger.info(`Successfully read passwords list for user ${userId}.`);
+            return data;
+        }
+        else return null;
+    }
+    catch (e) {
+        logger.error(`Couldn't read passwords list for user ${userId}`);
+        return null;
+    }
 }
 
-exports.readOne = () => {
-
+exports.readOne = async (userId, passwordId) => {
+    try {
+        const data = await dbConnector.selectPassword(userId, passwordId);
+        if (data) {
+            logger.info(`Successfully read password ${passwordId} for user ${userId}.`);
+            return data
+        }
+        else return null;
+    }
+    catch (e) {
+        logger.error(`Couldn't read password ${passwordId} for user ${userId}.`);
+        return null;
+    }
 }
 
 exports.update = () => {
