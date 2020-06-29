@@ -73,3 +73,58 @@ exports.insertUser = async (user) => {
         return false;
     }
 }
+
+exports.selectPassword = async (dbName, id) => {
+    try {
+        const client = await connect();
+        const db = client.db(dbName)
+        const collection = db.collection('passwords');
+        const data = await collection.findOne({'_id': id});
+
+        close(client);
+        if (data) logger.info(`Found password ${data._id} in the database ${db.databaseName} and collection ${collection.collectionName}.`)
+        return data;
+    }
+    catch (e) {
+        logger.error(`Cannot select items from database ${dbName} and collection passwords. Error: ${e}`)
+    }
+}
+
+exports.selectAllPasswords = async (dbName) => {
+    try {
+        const client = await connect();
+        const db = client.db(dbName);
+        const collection = db.collection(`passwords`);
+        const data = await collection.find().toArray();
+
+        close(client);
+
+        return data;
+    }
+    catch (e) {
+        logger.error(`Cannot select items from database ${dbName} and collection passwords. Error: ${e}`)
+    }
+}
+
+exports.insertPassword = async (dbName, password) => {
+    try {
+        const client = await connect();
+        const db = client.db(dbName);
+        const collection = db.collection(`passwords`);
+
+        const result = await collection.insertOne(
+            {
+                'service':  password.service,
+                'username': password.username,
+                'password': password.password
+            });
+
+        if (result) logger.info(`Successfully added new entry ${result.insertedId} to the database ${db.databaseName}.`)
+        close(client);
+        return result.insertedId;
+    }
+    catch (e) {
+        logger.error(`Cannot insert item to the database ${dbName} and collection passwords. Error: ${e}`)
+        return false;
+    }
+}
