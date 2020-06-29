@@ -32,4 +32,26 @@ app.post('/api/passwords/', auth.authenticateToken, passwordController.passwordM
     else return res.sendStatus(400);
 });
 
+
+app.get('/api/passwords/', auth.authenticateToken, async (req, res) => {
+   const data = await passwordController.read(req.user._id);
+
+   if (data) return res.send({passwords: data});
+   else res.sendStatus(500);
+});
+
+app.get('/api/password/:passwordId', auth.authenticateToken, async (req, res) => {
+    const password = await passwordController.readOne(req.user._id, req.params.passwordId);
+    if (password) return res.send({password: password});
+    else res.sendStatus(500);
+});
+
+app.get('/api/password/', auth.authenticateToken, async (req, res) => {
+   if (!req.body.passwordId) res.sendStatus(400);
+
+    const password = await passwordController.readOne(req.user._id, req.body.passwordId);
+    if (password) return res.send({password: password});
+    else res.sendStatus(500);
+});
+
 app.listen(config.web.port, () => console.log(`Listening on port ${config.web.port}`));
