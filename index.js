@@ -13,16 +13,19 @@ app.post('/login', async (req, res) => {
 
    if (user == null) return res.sendStatus(401);
    if (user === 'wrong format') return res.sendStatus(400);
-   if (user._id) return res.json({accessToken: await auth.sign(user)});
+   if (user._id) return res.json({
+       accessToken: await auth.sign(user),
+       expiresIn: config.auth.expiresIn
+   });
 });
 
 app.post('/register', async (req, res) => {
-    if (!req.body.user) return res.sendStatus(400);
+    if (!req.body.user) return res.status(400).send('Wrong format.');
 
     const result = await userController.register(req.body.user);
 
-    if (result) return res.sendStatus(201);
-    else return res.sendStatus(400);
+    if (result === 'already exists') return res.status(400).send('User already exists.');
+    if (result) return res.status(201).send('Successfully registered.');
 });
 
 app.post('/api/passwords/', auth.authenticateToken, passwordController.passwordMiddleware, async (req, res) => {
