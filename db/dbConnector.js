@@ -11,24 +11,24 @@ const connect = async () => {
         return client;
     }
     catch (e) {
-        logger.error(`Cannot connect to the database. Error: ${e}`)
+        logger.error(`Cannot connect to the database. Error: ${e}`);
         return 'error';
     }
-}
+};
 
 const close = (client) => {
     client.close().then(() => logger.info(`Connection to the database closed.`));
-}
+};
 
 exports.selectUser = async (email) => {
     try {
         const client = await connect();
-        const db = client.db(`Users`)
+        const db = client.db(`Users`);
         const collection = db.collection("users");
         const data = await collection.findOne({'email': email});
 
         close(client);
-        if (data) logger.info(`Found user ${data._id} in the database ${db.databaseName} and collection ${collection.collectionName}.`)
+        if (data) logger.info(`Found user ${data._id} in the database ${db.databaseName} and collection ${collection.collectionName}.`);
         return data;
     }
     catch (e) {
