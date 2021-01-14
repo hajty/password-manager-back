@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { auth } = require('../config/config.json')
 
 exports.sign = async (user) => {
-    return jwt.sign(user, auth.accessToken, {expiresIn: "10m"});
+    return jwt.sign(user, auth.accessToken, {expiresIn: auth.expiresIn});
 }
 
 exports.authenticateToken = (req, res, next) => {
