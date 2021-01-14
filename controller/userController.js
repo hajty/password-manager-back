@@ -21,7 +21,7 @@ exports.register = async (user) => {
 
         if (!(isEmail && isPassword)) return false;
 
-        if (await dbConnector.selectUser(user.email)) return false;
+        if (await dbConnector.selectUser(user.email)) return 'already exists';
 
         user.password = await argon2.hash(user.password);
         const result = await dbConnector.insertUser(user);
@@ -46,6 +46,7 @@ exports.login = async (user) => {
 
         const User = await dbConnector.selectUser(user.email);
 
+        if (User == null) return null;
         if (await argon2.verify(User.password, user.password)) return User;
         else return null;
     }
