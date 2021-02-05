@@ -14,8 +14,8 @@
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.5.8",
-    "password-validator": "^5.0.3",
+    "mongodb": "^3.6.3",
+    "password-validator": "^5.1.1",
     "simple-node-logger": "^18.12.24"
   }
 }
