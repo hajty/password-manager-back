@@ -5,6 +5,7 @@ const userController = require('./controller/userController');
 const passwordController = require('./controller/passwordController');
 
 const app = express();
+const port = process.env.PORT || config.web.port;
 
 app.use(express.json());
 
@@ -74,4 +75,4 @@ app.get('/api/password/', auth.authenticateToken, async (req, res) => {
     else res.sendStatus(500);
 });
 
-app.listen(config.web.port, () => console.log(`Listening on port ${config.web.port}`));
+app.listen(port, () => console.log(`Listening on port ${port}`));
