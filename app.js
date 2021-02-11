@@ -38,11 +38,11 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-    if (!req.body.user) return res.status(400).send('Wrong format.');
+    if (!req.body.user) return res.status(400).statusText('Wrong body format').send();
 
     const result = await userController.register(req.body.user);
 
-    if (result === 'already exists') return res.status(400).send({ error: 'User already exists.' });
+    if (result === 'already exists') return res.status(409).end('User already exists');
     if (result) return res.status(201).send({ id: result});
 });
 
