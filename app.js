@@ -38,7 +38,7 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-    if (!req.body.user) return res.status(400).statusText('Wrong body format').send();
+    if (!req.body.user) return res.status(400).end('Wrong body format');
 
     const result = await userController.register(req.body.user);
 
