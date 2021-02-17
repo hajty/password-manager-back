@@ -17,7 +17,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, authorization');
 
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
@@ -57,7 +57,7 @@ app.post('/api/passwords/', auth.authenticateToken, passwordController.passwordM
 app.get('/api/passwords/', auth.authenticateToken, async (req, res) => {
    const data = await passwordController.read(req.user._id);
 
-   if (data) return res.send({passwords: data});
+   if (data) return res.send(data);
    else res.sendStatus(500);
 });
 
