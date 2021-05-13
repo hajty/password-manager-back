@@ -49,7 +49,9 @@ app.post('/register', async (req, res) => {
 app.post('/api/passwords/', auth.authenticateToken, passwordController.passwordMiddleware, async (req, res) => {
     const result = await passwordController.create(req.user._id, req.body.password);
 
-    if (result) return res.sendStatus(201);
+    if (result) {
+        res.status(201).send(req.body.password);
+    }
     else return res.sendStatus(400);
 });
 
@@ -73,6 +75,14 @@ app.get('/api/password/', auth.authenticateToken, async (req, res) => {
     const password = await passwordController.readOne(req.user._id, req.body.passwordId);
     if (password) return res.send({password: password});
     else res.sendStatus(500);
+});
+
+app.delete('/api/password/:passwordId', auth.authenticateToken, async (req, res) => {
+    if (!req.params.passwordId) res.sendStatus(400);
+
+    const result = await passwordController.delete(req.user._id, req.params.passwordId);
+    if (result) return res.sendStatus(204);
+    else return res.sendStatus(404);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
