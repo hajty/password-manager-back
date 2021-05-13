@@ -130,3 +130,27 @@ exports.insertPassword = async (dbName, password) => {
         return false;
     }
 }
+
+exports.deletePassword = async (dbName, passwordId) => {
+    try {
+        const client = await connect();
+        const db = client.db(dbName)
+        const collection = db.collection('passwords');
+        const ObjectID = require('mongodb').ObjectID;
+        const result = await collection.deleteOne({'_id': new ObjectID(passwordId)});
+
+        close(client);
+        if (result.deletedCount === 1) {
+            logger.info(`Deleted password ${passwordId} from the database ${db.databaseName} and collection ${collection.collectionName}.`);
+            return passwordId;
+        }
+        else {
+            logger.info(`Password ${passwordId} does not exist in database ${db.databaseName} and collection ${collection.collectionName}.`);
+            return null;
+        }
+    }
+    catch (e) {
+        logger.error(`Cannot delete password from database ${dbName} and collection passwords. Error: ${e}`);
+        return null;
+    }
+}

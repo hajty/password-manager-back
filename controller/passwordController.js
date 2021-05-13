@@ -57,6 +57,17 @@ exports.update = () => {
 
 }
 
-exports.delete = () => {
-
+exports.delete = async (userId, passwordId) => {
+    try {
+        const result = await dbConnector.deletePassword(userId, passwordId);
+        if (result) {
+            logger.info(`Successfully deleted password ${passwordId} for user ${userId}.`);
+            return result;
+        }
+        else return null;
+    }
+    catch (e) {
+        logger.error(`Couldn't read password ${passwordId} for user ${userId}.`);
+        return null;
+    }
 }
