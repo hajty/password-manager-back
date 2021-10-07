@@ -53,8 +53,19 @@ exports.readOne = async (userId, passwordId) => {
     }
 }
 
-exports.update = () => {
-
+exports.update = async (userId, passwordId, parameterToUpdate) => {
+    try {
+        const result = await dbConnector.updatePassword(userId, passwordId, parameterToUpdate);
+        if (result) {
+            logger.info(`Successfully updated password ${passwordId} for user ${userId}.`);
+            return result;
+        }
+        else return null;
+    }
+    catch (e) {
+        logger.error(`Couldn't update password ${passwordId} for user ${userId}.`);
+        return null;
+    }
 }
 
 exports.delete = async (userId, passwordId) => {
@@ -67,7 +78,7 @@ exports.delete = async (userId, passwordId) => {
         else return null;
     }
     catch (e) {
-        logger.error(`Couldn't read password ${passwordId} for user ${userId}.`);
+        logger.error(`Couldn't delete password ${passwordId} for user ${userId}.`);
         return null;
     }
 }

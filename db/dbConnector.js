@@ -131,6 +131,30 @@ exports.insertPassword = async (dbName, password) => {
     }
 }
 
+exports.updatePassword = async (dbName, passwordId, parameterToUpdate) => {
+    try {
+        const client = await connect();
+        const db = client.db(dbName)
+        const collection = db.collection('passwords');
+        const ObjectID = require('mongodb').ObjectID;
+        const result = await collection.updateOne({'_id': new ObjectID(passwordId)}, {$set: parameterToUpdate});
+
+        close(client);
+        if (result.modifiedCount === 1) {
+            logger.info(`Updated password ${passwordId} in the database ${db.databaseName} and collection ${collection.collectionName}.`);
+            return passwordId;
+        }
+        else {
+            logger.info(`Password ${passwordId} does not exist in database ${db.databaseName} and collection ${collection.collectionName}.`);
+            return null;
+        }
+    }
+    catch (e) {
+        logger.error(`Cannot update password ${passwordId} in database ${dbName} and collection passwords. Error: ${e}`);
+        return null;
+    }
+}
+
 exports.deletePassword = async (dbName, passwordId) => {
     try {
         const client = await connect();

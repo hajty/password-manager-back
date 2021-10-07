@@ -77,6 +77,13 @@ app.get('/api/password/', auth.authenticateToken, async (req, res) => {
     else res.sendStatus(500);
 });
 
+app.patch('/api/password/:passwordId', auth.authenticateToken, async (req, res) => {
+    if (!req.params.passwordId || !req.body.parametersToUpdate) res.sendStatus(400);
+    const result = await passwordController.update(req.user._id, req.params.passwordId, req.body.parametersToUpdate);
+    if (result) return res.sendStatus(204);
+    else return res.sendStatus(404);
+});
+
 app.delete('/api/password/:passwordId', auth.authenticateToken, async (req, res) => {
     if (!req.params.passwordId) res.sendStatus(400);
 
