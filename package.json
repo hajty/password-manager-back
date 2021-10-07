@@ -10,11 +10,11 @@
   "author": "Bartosz Miłosierny",
   "license": "ISC",
   "dependencies": {
-    "argon2": "^0.26.2",
+    "argon2": "^0.28.2",
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.6.3",
+    "mongodb": "^3.7.2",
     "password-validator": "^5.1.1",
     "simple-node-logger": "^18.12.24"
   }
