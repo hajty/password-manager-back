@@ -27,14 +27,15 @@ app.use((req, res, next) => {
 });
 
 app.post('/login', async (req, res) => {
-   const user = await userController.login(req.body.user);
+    const user = await userController.login(req.body.user);
 
-   if (user == null) return res.sendStatus(401);
-   if (user === 'wrong format') return res.sendStatus(400);
-   if (user._id) return res.json({
-       accessToken: await auth.sign(user),
-       expiresIn: config.auth.expiresIn
-   });
+    if (user == null) return res.sendStatus(401);
+    if (user === 'wrong format') return res.sendStatus(400);
+    if (user._id) return res.json({
+        accessToken: await auth.sign(user),
+        refreshToken: await auth.signRefresh(user),
+        expiresIn: config.auth.expiresIn,
+    });
 });
 
 app.post('/register', async (req, res) => {
@@ -46,6 +47,20 @@ app.post('/register', async (req, res) => {
     if (result) return res.status(201).send({ id: result});
 });
 
+app.get('/token', auth.authenticateRefreshToken, async (req, res) => {
+    const user =
+        {
+            _id: req.user._id,
+            email: req.user.email,
+            password: req.user.password,
+        }
+    return res.json({
+        accessToken: await auth.sign(user),
+        refreshToken: await auth.signRefresh(user),
+        expiresIn: config.auth.expiresIn,
+    });
+});
+
 app.post('/api/passwords/', auth.authenticateToken, passwordController.passwordMiddleware, async (req, res) => {
     const result = await passwordController.create(req.user._id, req.body.password);
 
@@ -54,7 +69,6 @@ app.post('/api/passwords/', auth.authenticateToken, passwordController.passwordM
     }
     else return res.sendStatus(400);
 });
-
 
 app.get('/api/passwords/', auth.authenticateToken, async (req, res) => {
    const data = await passwordController.read(req.user._id);
