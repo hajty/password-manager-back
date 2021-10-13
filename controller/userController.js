@@ -16,7 +16,7 @@ passwordValidator
 
 exports.register = async (user) => {
     try {
-        const isEmail = await emailValidator.validate(user.email);
+        const isEmail = emailValidator.validate(user.email);
         const isPassword = await passwordValidator.validate(user.password);
 
         if (!(isEmail && isPassword)) return false;
@@ -39,7 +39,7 @@ exports.register = async (user) => {
 
 exports.login = async (user) => {
     try {
-        const isEmail = await emailValidator.validate(user.email);
+        const isEmail = emailValidator.validate(user.email);
         const isPassword = await passwordValidator.validate(user.password);
 
         if (!(isEmail && isPassword)) return 'wrong format';
