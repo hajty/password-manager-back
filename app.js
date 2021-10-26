@@ -1,6 +1,6 @@
 const express = require('express');
 const auth = require('./authentication/authentication');
-const config = require('./config/config.json');
+const config = require('./config/config.js');
 const userController = require('./controller/userController');
 const passwordController = require('./controller/passwordController');
 
