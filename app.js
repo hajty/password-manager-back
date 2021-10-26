@@ -65,6 +65,7 @@ app.post('/api/passwords/', auth.authenticateToken, passwordController.passwordM
     const result = await passwordController.create(req.user._id, req.body.password);
 
     if (result) {
+        req.body.password._id = result;
         res.status(201).send(req.body.password);
     }
     else return res.sendStatus(400);
