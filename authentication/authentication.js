@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { auth } = require('../config/config.json')
+const { auth } = require('../config/config.js')
 
 exports.sign = async (user) => {
     return jwt.sign(user, auth.accessToken, { expiresIn: auth.expiresIn });

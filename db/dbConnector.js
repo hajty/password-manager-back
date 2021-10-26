@@ -1,4 +1,4 @@
-const config = require('../config/config.json');
+const config = require('../config/config.js');
 const MongoClient = require('mongodb').MongoClient;
 const uri = `mongodb+srv://${config.db.login}:${config.db.password}@passwordmanager-fjy1r.mongodb.net/test?retryWrites=true&w=majority`;
 const logger = require('../logger/logger').logger;
